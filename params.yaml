@@ -1,0 +1,12 @@
+model_ver: "000.004"
+dataset_file: "data/dataset/chembl_31_chemreps.txt"
+pct_train: 0.8
+pct_validation: 0.1
+pct_test: 0.1
+max_len_smiles: 120
+batch_size: 64
+learning_rate: 0.0003
+num_samples: 4
+latent_dim: 256
+num_workers: 4
+num_epochs: 3

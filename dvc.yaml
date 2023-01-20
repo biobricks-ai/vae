@@ -1,0 +1,26 @@
+stages:
+  tokenize:
+    cmd: python code/0_tokenize.py
+    deps:
+      - code/0_tokenize.py
+      - data/dataset/chembl_31_chemreps.txt
+    outs:
+      - data/tokenized
+  train:
+    cmd: python code/1_train.py
+    params: 
+      - learning_rate
+      - latent_dim
+    deps:
+      - code/1_train.py
+      - data/tokenized
+    outs:
+      - model/
+  evaluate:
+    cmd: python code/2_evalute.py
+    deps:
+      - code/2_evalute.py
+      - data/tokenized
+      - model
+    metrics:
+      - metrics/evaluate/scores.json

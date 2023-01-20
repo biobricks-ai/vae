@@ -1,0 +1,49 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python code/0_tokenization.py
+    deps:
+    - path: code/0_tokenization.py
+      md5: 960cabfc0ba58c82598821bf073a3a85
+      size: 2220
+    - path: data/dataset/chembl_31_chemreps.txt
+      md5: 53a008c3d97b427899fedc2124a0b3b5
+      size: 601012864
+    outs:
+    - path: data/tokenized
+      md5: 3386aebab2c15808b4e2e0986a2ff355.dir
+      size: 1064533446
+      nfiles: 5
+  train:
+    cmd: python code/1_train.py
+    deps:
+    - path: code/1_train.py
+      md5: 011a6c70cc6b5f19a4b69b4ffe53676e
+      size: 4069
+    - path: data/tokenized
+      md5: 3386aebab2c15808b4e2e0986a2ff355.dir
+      size: 1064533446
+      nfiles: 5
+    params:
+      params.yaml:
+        latent_dim: 256
+        learning_rate: 0.0003
+    outs:
+    - path: model/
+      md5: 71e0bb20dfec2eda0e350d1ee4dec884.dir
+      size: 183937024
+      nfiles: 7
+  tokenize:
+    cmd: python code/0_tokenize.py
+    deps:
+    - path: code/0_tokenize.py
+      md5: 960cabfc0ba58c82598821bf073a3a85
+      size: 2220
+    - path: data/dataset/chembl_31_chemreps.txt
+      md5: 53a008c3d97b427899fedc2124a0b3b5
+      size: 601012864
+    outs:
+    - path: data/tokenized
+      md5: 03cf1ef904a380d7a84aadf34f460881.dir
+      size: 1064533446
+      nfiles: 5
