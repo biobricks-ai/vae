@@ -150,18 +150,18 @@ class DataBatch(tf.keras.utils.Sequence):
         return (batch_x_one_hot, batch_x)
 
 class SaveMetrics(tf.keras.callbacks.Callback):
-    def __init__(self, loss_file, accuracy_file):
-        self.loss_file = loss_file
-        self.accuracy_file = accuracy_file
+    def __init__(self, metrics_file):
+        self.metrics_file = metrics_file
+        with open(self.metrics_file, 'a') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow(['epoch', 'loss', 'accuracy', 'val_loss', 
+                'val_accuracy'])
     
     def on_epoch_end(self, epoch, logs={}):
-        with open(self.loss_file, 'a') as csv_file:
+        with open(self.metrics_file, 'a') as csv_file:
             writer = csv.writer(csv_file)
-            writer.writerow([epoch, logs.get('loss'), 
-                logs.get('val_loss')])
-        with open(self.accuracy_file, 'a') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow([epoch, logs.get('accuracy'),
+            writer.writerow([epoch, logs.get('loss'),
+                logs.get('accuracy'), logs.get('val_loss'), 
                 logs.get('val_accuracy')])
 
 

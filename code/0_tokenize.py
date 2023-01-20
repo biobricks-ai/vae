@@ -37,9 +37,10 @@ for i in tqdm(range(len(smiles))):
         smiles_int[i, t, 0] = char_to_int[char]
 
 x_train, x_test = train_test_split(smiles_int,
-    test_size = 1 - params["pct_train"])
+    test_size = 1 - params["pct_train"], random_state = 42)
 x_validation, x_test = train_test_split(x_test, test_size =
-    params["pct_test"]/(params["pct_test"]+params["pct_validation"]))
+    params["pct_test"]/(params["pct_test"]+params["pct_validation"]), 
+    random_state = 42)
 
 np.save("data/tokenized/x_train", x_train)
 np.save("data/tokenized/x_validation", x_validation)

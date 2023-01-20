@@ -16,11 +16,25 @@ stages:
       - data/tokenized
     outs:
       - model/
+      - metrics/train/metrics.csv
   evaluate:
-    cmd: python code/2_evalute.py
+    cmd: python code/2_evaluate.py
     deps:
-      - code/2_evalute.py
+      - code/2_evaluate.py
       - data/tokenized
       - model
     metrics:
-      - metrics/evaluate/scores.json
+      - metrics/test/scores.json
+plots:
+  - loss: 
+      y:
+        metrics/train/metrics.csv: [loss, val_loss]
+      x_label: Epoch
+      y_label: Loss
+      title: Loss
+  - accuracy: 
+      y:
+        metrics/train/metrics.csv: [accuracy, val_accuracy]
+      x_label: Epoch
+      y_label: Accuracy
+      title: Accuracy

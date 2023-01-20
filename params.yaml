@@ -1,5 +1,5 @@
-model_ver: "000.004"
-dataset_file: "data/dataset/chembl_31_chemreps.txt"
+model_ver: '000.004'
+dataset_file: data/dataset/chembl_31_chemreps.txt
 pct_train: 0.8
 pct_validation: 0.1
 pct_test: 0.1

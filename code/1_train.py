@@ -19,7 +19,6 @@ def main():
         params = yaml.safe_load(stream)
 
     x_train = np.load("data/tokenized/x_train.npy")
-    x_train = x_train[1:100,:,:]
     x_validation =np.load("data/tokenized/x_validation.npy")
 
     # x_train = tf.data.TFRecordDataset("data/x_train.tfdata")
@@ -50,7 +49,7 @@ def main():
         monitor = 'val_loss', factor = 0.5, patience = 3, verbose = 1,
         min_lr = 0.0)
     save_metrics = vae.SaveMetrics(
-        "metrics/training/loss.csv", "metrics/training/accuracy.csv")
+        "metrics/train/metrics.csv")
     log_dir = "logs/train/" + datetime.datetime.now().strftime(
         "%Y%m%d-%H%M%S")
     tensorboard_cb = tf.keras.callbacks.TensorBoard(
@@ -61,7 +60,7 @@ def main():
         validation_data = x_validation_batched,
         epochs = params["num_epochs"], use_multiprocessing = True,
         workers = params["num_workers"],
-        callbacks = [checkpoint, reduce_lr,
+        callbacks = [checkpoint, reduce_lr, save_metrics,
             DVCLiveCallback(save_dvc_exp = True)])
     # history = model.fit( x = x_train_batched,
     #     validation_data = x_validation_batched,
@@ -70,8 +69,9 @@ def main():
     #     callbacks = [checkpoint, reduce_lr, save_metrics,
     #         tensorboard_cb])
     # print(history.history)
-    with open("metrics/training/metrics.json", "w") as file:
-        json.dump(history.history, file)
+    # del history.history["lr"]
+    # with open("metrics/train/metrics.yaml", "w") as file:
+    #     yaml.dump(history.history, file)
 
 if __name__ == "__main__":
     main()
