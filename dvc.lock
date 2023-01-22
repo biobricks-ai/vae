@@ -1,0 +1,56 @@
+schema: '2.0'
+stages:
+  tokenize:
+    cmd: python code/0_tokenize.py
+    deps:
+    - path: code/0_tokenize.py
+      md5: e58f45b7be63d9269e425a85ba651cab
+      size: 2263
+    - path: data/dataset/chembl_31_chemreps.txt
+      md5: 53a008c3d97b427899fedc2124a0b3b5
+      size: 601012864
+    outs:
+    - path: data/tokenized
+      md5: ee2dfacee08ebf5a847bc918235e70b5.dir
+      size: 1064533446
+      nfiles: 5
+  train:
+    cmd: python code/1_train.py
+    deps:
+    - path: code/1_train.py
+      md5: 62a1b042ea74ec7ae6345a037d7a374b
+      size: 3764
+    - path: data/tokenized
+      md5: ee2dfacee08ebf5a847bc918235e70b5.dir
+      size: 1064533446
+      nfiles: 5
+    params:
+      params.yaml:
+        latent_dim: 256
+        learning_rate: 0.0003
+    outs:
+    - path: metrics/train/metrics.csv
+      md5: e5704a69cb5f0a5b34bf08f03f6802d8
+      size: 3897
+    - path: model/
+      md5: fca9aa680a72aadfb15b410cd4c18d3a.dir
+      size: 980996985
+      nfiles: 33
+  evaluate:
+    cmd: python code/2_evaluate.py
+    deps:
+    - path: code/2_evaluate.py
+      md5: cfe954a8b28d54e68496135fd9b025de
+      size: 1013
+    - path: data/tokenized
+      md5: ee2dfacee08ebf5a847bc918235e70b5.dir
+      size: 1064533446
+      nfiles: 5
+    - path: model
+      md5: fca9aa680a72aadfb15b410cd4c18d3a.dir
+      size: 980996985
+      nfiles: 33
+    outs:
+    - path: metrics/test/scores.json
+      md5: 8d28e5972861dd189e05654541f46c88
+      size: 69
