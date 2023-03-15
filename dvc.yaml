@@ -1,26 +1,40 @@
 stages:
-  tokenize:
-    cmd: python code/0_tokenize.py
+  install:
+    cmd: zsh code/0_install.sh
     deps:
-      - code/0_tokenize.py
-      - data/dataset/chembl_31_chemreps.txt
+      - code/0_install.sh
+    outs:
+      - env
+  download:
+    cmd: python code/1_download.py
+    deps:
+      - env
+      - code/1_download.py
+      - https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_32/chembl_32_chemreps.txt.gz
+    outs:
+      - data/raw
+  tokenize:
+    cmd: python code/2_tokenize.py
+    deps:
+      - code/2_tokenize.py
+      - data/raw
     outs:
       - data/tokenized
   train:
-    cmd: python code/1_train.py
+    cmd: python code/3_train.py
     params: 
       - learning_rate
       - latent_dim
     deps:
-      - code/1_train.py
+      - code/3_train.py
       - data/tokenized
     outs:
       - model/
       - metrics/train/metrics.csv
   evaluate:
-    cmd: python code/2_evaluate.py
+    cmd: python code/4_evaluate.py
     deps:
-      - code/2_evaluate.py
+      - code/4_evaluate.py
       - data/tokenized
       - model
     metrics:

@@ -54,3 +54,14 @@ stages:
     - path: metrics/test/scores.json
       md5: 8d28e5972861dd189e05654541f46c88
       size: 69
+  install:
+    cmd: code/0_install.sh
+    deps:
+    - path: code/0_install.sh
+      md5: 418799ffd66b2fcf64573a00203c8f6c
+      size: 117
+    outs:
+    - path: env
+      md5: af689a1074706d9016f8d1f29a924c31.dir
+      size: 337995380
+      nfiles: 8031
